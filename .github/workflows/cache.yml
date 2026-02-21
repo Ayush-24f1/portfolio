@@ -1,0 +1,29 @@
+name: Cache Demo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create dependency folder
+        run: |
+          mkdir -p my-deps
+          echo "dependency file" > my-deps/file.txt
+
+      - name: Cache dependencies
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          path: my-deps
+          key: cache-ca5a76f
+
+      - name: prime-cache-ca5a76f
+        run: echo "Cache hit? ${{ steps.cache-step.outputs.cache-hit }}"
