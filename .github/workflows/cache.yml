@@ -13,17 +13,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Create dependency folder
-        run: |
-          mkdir -p my-deps
-          echo "dependency file" > my-deps/file.txt
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
       - name: Cache dependencies
-        id: cache-step
+        id: cache
         uses: actions/cache@v4
         with:
-          path: my-deps
+          path: ~/.cache/pip
           key: cache-ca5a76f
 
       - name: prime-cache-ca5a76f
-        run: echo "Cache hit? ${{ steps.cache-step.outputs.cache-hit }}"
+        run: echo "Cache hit? ${{ steps.cache.outputs.cache-hit }}"
+
+      - name: Install dependencies
+        run: pip install requests
